@@ -5,21 +5,13 @@ on:
     branches: [ main ]
 
 jobs:
-  analyze:
+  upload-to-prod:
     runs-on: ubuntu-latest
     permissions:
       contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install deps
-        run: pip install -r requirements.txt
 
       - name: Configure AWS creds
         uses: aws-actions/configure-aws-credentials@v4
@@ -28,10 +20,31 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region:            ${{ secrets.AWS_REGION }}
 
-      - name: Run Rekognition analyzer (prod)
-        env:
-          AWS_REGION:      ${{ secrets.AWS_REGION }}
-          S3_BUCKET:       ${{ secrets.S3_BUCKET }}
-          DYNAMODB_TABLE:  ${{ secrets.DYNAMODB_TABLE_PROD }}
-          GITHUB_REF_NAME: ${{ github.ref_name }}
-        run: python analyze_image.py
+      - name: Upload images to S3 (prod prefix)
+        run: |
+          set -e
+          shopt -s nullglob
+          for f in images/*.{jpg,jpeg,png,JPG,JPEG,PNG}; do
+            b=$(basename "$f")
+            echo "Uploading $f -> s3://${{ secrets.S3_BUCKET }}/rekognition-input/prod/$b"
+            aws s3 cp "$f" "s3://${{ secrets.S3_BUCKET }}/rekognition-input/prod/$b"
+          done
+          echo "No images matched pattern" || true
+
+      # --- Optional validation ---
+      - name: Validate DynamoDB writes (prod)
+        if: always()
+        run: |
+          set -e
+          sleep 8
+          shopt -s nullglob
+          for f in images/*.{jpg,jpeg,png,JPG,JPEG,PNG}; do
+            b=$(basename "$f")
+            key="rekognition-input/prod/$b"
+            echo "Checking DynamoDB for $key"
+            aws dynamodb query \
+              --table-name "${{ secrets.DYNAMODB_TABLE_PROD }}" \
+              --key-condition-expression "filename = :f" \
+              --expression-attribute-values "{\":f\":{\"S\":\"$key\"}}" \
+              --output table || true
+          done

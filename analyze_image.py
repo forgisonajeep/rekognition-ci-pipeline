@@ -31,7 +31,12 @@ def main():
             MaxLabels=10,
             MinConfidence=70.0
         )
-        labels = [{"Name": l["Name"], "Confidence": round(l["Confidence"], 2)} for l in resp.get("Labels", [])]
+        from decimal import Decimal
+
+        labels = [
+            {"Name": l["Name"], "Confidence": Decimal(str(round(l["Confidence"], 2)))}
+            for l in resp.get("Labels", [])
+        ]
 
         item = {
             "filename": f"rekognition-input/{path.name}",

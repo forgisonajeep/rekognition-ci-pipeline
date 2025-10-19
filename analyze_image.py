@@ -44,7 +44,7 @@ def main():
             "timestamp": iso_now(),
             "branch": branch,
         }
-        print("Writing result to DynamoDB:", json.dumps(item, indent=2))
+        print("Writing result to DynamoDB:", item)
         ddb.put_item(Item=item)
 
 if __name__ == "__main__":

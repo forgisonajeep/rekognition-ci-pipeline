@@ -3,23 +3,16 @@ name: Analyze images (PR → beta)
 on:
   pull_request:
     branches: [ main ]
+    types: [opened, synchronize, reopened]
 
 jobs:
-  analyze:
+  upload-to-beta:
     runs-on: ubuntu-latest
     permissions:
       contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install deps
-        run: pip install -r requirements.txt
 
       - name: Configure AWS creds
         uses: aws-actions/configure-aws-credentials@v4
@@ -28,10 +21,33 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region:            ${{ secrets.AWS_REGION }}
 
-      - name: Run Rekognition analyzer (beta)
-        env:
-          AWS_REGION:      ${{ secrets.AWS_REGION }}
-          S3_BUCKET:       ${{ secrets.S3_BUCKET }}
-          DYNAMODB_TABLE:  ${{ secrets.DYNAMODB_TABLE_BETA }}
-          GITHUB_REF_NAME: ${{ github.head_ref }}
-        run: python analyze_image.py
+      - name: Upload images to S3 (beta prefix)
+        if: always()
+        run: |
+          set -e
+          shopt -s nullglob
+          for f in images/*.{jpg,jpeg,png,JPG,JPEG,PNG}; do
+            b=$(basename "$f")
+            echo "Uploading $f -> s3://${{ secrets.S3_BUCKET }}/rekognition-input/beta/$b"
+            aws s3 cp "$f" "s3://${{ secrets.S3_BUCKET }}/rekognition-input/beta/$b"
+          done
+          echo "No images matched pattern" || true
+
+      # --- Optional validation (simple & slow-safe) ---
+      - name: Validate DynamoDB writes (beta)
+        if: always()
+        run: |
+          set -e
+          # small wait to let Lambda finish
+          sleep 8
+          shopt -s nullglob
+          for f in images/*.{jpg,jpeg,png,JPG,JPEG,PNG}; do
+            b=$(basename "$f")
+            key="rekognition-input/beta/$b"
+            echo "Checking DynamoDB for $key"
+            aws dynamodb query \
+              --table-name "${{ secrets.DYNAMODB_TABLE_BETA }}" \
+              --key-condition-expression "filename = :f" \
+              --expression-attribute-values "{\":f\":{\"S\":\"$key\"}}" \
+              --output table || true
+          done

@@ -1,5 +1,6 @@
 # Amazon Rekognition CI/CD Image Labeling Pipeline (Pixel Learning Co.)
 <!-- Badges -->
+[![Release](https://img.shields.io/badge/release-v1.0.0-brightgreen.svg)](https://github.com/forgisonajeep/rekognition-ci-pipeline/releases/tag/v1.0.0)
 ![Release](https://img.shields.io/badge/Release-v1.0.0-blue?style=for-the-badge)
 [![Amazon Rekognition](https://img.shields.io/badge/Rekognition-Active-brightgreen)]()
 [![CI/CD](https://img.shields.io/badge/GitHub%20Actions-CI%2FCD-blue)]()
@@ -17,21 +18,15 @@
 [Architecture Overview](#architecture-overview) •
 [Repository Structure](#repository-structure) •
 [Prerequisites (GitHub Secrets)](#prerequisites-github-secrets) •
-[AWS Setup](#aws-setup) •
-[Stage 1 — Foundational (CI-based)](#stage-1--foundational-ci-based) •
-[Local Validation Script](#local-validation-script) •
-[Foundational Lambda](#foundational-lambda) •
-[Workflows (PR/Merge)](#foundational-workflows) •
-[Stage 2 — Advanced (Event-driven / Serverless)](#stage-2--advanced-event-driven--serverless) •
-[Advanced Lambda](#advanced-lambda) •
-[S3 Notifications](#s3-notifications) •
-[TTL & Log Retention](#ttl--log-retention) •
-[Release Notes](#release-notes) •
-[Results & Verification](#results--verification) •
+[AWS Resources Setup](#aws-resources-setup) •
+[Foundational (CI-based)](#foundational-implementation) •
+[Advanced (Event-driven / Serverless)](#advanced-implementation) •
 [Security Hardening](#security-hardening) •
 [Cost Optimization](#cost-optimization) •
 [Troubleshooting](#troubleshooting) •
-[Next Steps](#next-steps-complex-phase)
+[What's Next (Complex/IaC)](#next-steps-complex-phase) •
+[Closing](#closing) •
+[Release Notes](#release-notes)
 
 ---
 Automated image classification using **Amazon Rekognition** across two stages:
@@ -452,4 +447,4 @@ Use the Foundational release (**`foundational-1.0`**) as a proof checkpoint, the
 ---
 
 ## Release Notes
-v1.0.0 — Foundational pipeline + Advanced event-driven Lambda live
+**[v1.0.0](https://github.com/forgisonajeep/rekognition-ci-pipeline/releases/tag/v1.0.0)** — Foundational pipeline + Advanced event-driven Lambda live

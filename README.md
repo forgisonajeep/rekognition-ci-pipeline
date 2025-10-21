@@ -419,7 +419,7 @@ This repository enforces a hardened security model built around CI/CD safety con
 - DynamoDB **TTL is enabled** to automatically expire stale inference logs
 - Formal release (`v1.0.0`) is **immutable** for reproducibility
 - `main` is protected with **required PR review + passing checks**
-- When sharing artifacts externally, only **pre-signed URLs** are used
+- When sharing artifacts externally, only **pre-signed URLs** are used-
 
 
 
@@ -463,3 +463,4 @@ Use the Foundational release (**`foundational-1.0`**) as a proof checkpoint, the
 
 ## Release Notes
 **[v1.0.0](https://github.com/forgisonajeep/rekognition-ci-pipeline/releases/tag/v1.0.0)** — Foundational pipeline + Advanced event-driven Lambda live
+THIS SHOULD FAIL

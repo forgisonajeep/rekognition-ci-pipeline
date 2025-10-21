@@ -419,7 +419,7 @@ This repository enforces a hardened security model built around CI/CD safety con
 - DynamoDB **TTL is enabled** to automatically expire stale inference logs
 - Formal release (`v1.0.0`) is **immutable** for reproducibility
 - `main` is protected with **required PR review + passing checks**
-- When sharing artifacts externally, only **pre-signed URLs** are used-
+- When sharing artifacts externally, only **pre-signed URLs** are used
 
 
 

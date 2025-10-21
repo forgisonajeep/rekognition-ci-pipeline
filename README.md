@@ -408,6 +408,20 @@ Note: In Advanced, Rekognition is not called in GitHub Actions. The S3 put trigg
 - **Private S3 buckets** by default; share artifacts via **presigned URLs**.
 - **Separate beta/prod** write paths and tables to avoid cross-contamination.
 
+### Security Posture
+
+This repository enforces a hardened security model built around CI/CD safety controls:
+
+- IAM access is scoped using **principle of least privilege**
+- All AWS credentials are stored in **GitHub Actions Secrets**
+- In advanced mode, **Rekognition is triggered by S3 events**, not directly from CI
+- S3 remains **private by default** (no public object ACLs)
+- DynamoDB **TTL is enabled** to automatically expire stale inference logs
+- Formal release (`v1.0.0`) is **immutable** for reproducibility
+- `main` is protected with **required PR review + passing checks**
+- When sharing artifacts externally, only **pre-signed URLs** are used
+
+
 ---
 
 ## Cost Optimization

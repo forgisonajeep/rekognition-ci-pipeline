@@ -1,34 +1,44 @@
 # Amazon Rekognition CI/CD Image Labeling Pipeline (Pixel Learning Co.)
+<!-- Badges -->
+![Release](https://img.shields.io/badge/Release-v1.0.0-blue?style=for-the-badge)
+[![Amazon Rekognition](https://img.shields.io/badge/Rekognition-Active-brightgreen)]()
+[![CI/CD](https://img.shields.io/badge/GitHub%20Actions-CI%2FCD-blue)]()
+[![Lambda](https://img.shields.io/badge/Serverless-Lambda%20Event%20Driven-orange)]()
+[![DynamoDB TTL](https://img.shields.io/badge/DynamoDB-TTL%20Enabled-purple)]()
+  
 
+  
+
+---
+
+<!-- Quick Nav -->
+**Jump to:**  
+[Project Overview](#project-overview) •
+[Architecture Overview](#architecture-overview) •
+[Repository Structure](#repository-structure) •
+[Prerequisites (GitHub Secrets)](#prerequisites-github-secrets) •
+[AWS Setup](#aws-setup) •
+[Stage 1 — Foundational (CI-based)](#stage-1--foundational-ci-based) •
+[Local Validation Script](#local-validation-script) •
+[Foundational Lambda](#foundational-lambda) •
+[Workflows (PR/Merge)](#foundational-workflows) •
+[Stage 2 — Advanced (Event-driven / Serverless)](#stage-2--advanced-event-driven--serverless) •
+[Advanced Lambda](#advanced-lambda) •
+[S3 Notifications](#s3-notifications) •
+[TTL & Log Retention](#ttl--log-retention) •
+[Release Notes](#release-notes) •
+[Results & Verification](#results--verification) •
+[Security Hardening](#security-hardening) •
+[Cost Optimization](#cost-optimization) •
+[Troubleshooting](#troubleshooting) •
+[Next Steps](#next-steps-complex-phase)
+
+---
 Automated image classification using **Amazon Rekognition** across two stages:
 - **Foundational (CI-based):** GitHub Actions runs a Python script that uploads images to S3, calls Rekognition, and (optionally) writes to DynamoDB.
 - **Advanced (Event-driven):** S3 uploads trigger **AWS Lambda**, which calls Rekognition and writes structured results (with **TTL**) into **DynamoDB**. Logs are visible in **CloudWatch**.
 
----
 
-## Table of Contents
-
-- [Project Overview](#project-overview)
-- [Architecture Overview](#architecture-overview)
-- [Repository Structure](#repository-structure)
-- [Prerequisites (GitHub Secrets)](#prerequisites-github-secrets)
-- [AWS Resources Setup](#aws-resources-setup)
-- [Foundational Implementation](#foundational-implementation)
-  - [Foundational Script (analyze.py)](#foundational-script-analyzepy)
-  - [Foundational Workflows](#foundational-workflows)
-  - [Manual Validation (Foundational)](#manual-validation-foundational)
-  - [Foundational Release](#foundational-release)
-- [Advanced Implementation](#advanced-implementation)
-  - [Lambda Handler (lambda/lambda_handler.py)](#lambda-handler-lambdalambda_handlerpy)
-  - [Advanced Workflows](#advanced-workflows)
-  - [S3 Event Triggers](#s3-event-triggers)
-  - [TTL & DynamoDB Retention](#ttl--dynamodb-retention)
-  - [Advanced Validation (Proof)](#advanced-validation-proof)
-- [Security Hardening](#security-hardening)
-- [Cost Optimization](#cost-optimization)
-- [Troubleshooting](#troubleshooting)
-- [What’s Next (Complex / IaC)](#whats-next-complex--iac)
-- [Closing](#closing)
 
 ---
 
@@ -438,3 +448,8 @@ Note: In Advanced, Rekognition is not called in GitHub Actions. The S3 put trigg
 
 This repo demonstrates a clean path from **Foundational (CI)** to **Advanced (event-driven)** for AI-powered image labeling with Rekognition.  
 Use the Foundational release (**`foundational-1.0`**) as a proof checkpoint, then continue with the Advanced pipeline for hands-off operations.
+
+---
+
+## Release Notes
+v1.0.0 — Foundational pipeline + Advanced event-driven Lambda live

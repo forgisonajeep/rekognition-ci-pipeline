@@ -1,7 +1,7 @@
 # Amazon Rekognition CI/CD Image Labeling Pipeline (Pixel Learning Co.)
 <!-- Badges -->
 [![Release](https://img.shields.io/badge/release-v1.0.0-brightgreen.svg)](https://github.com/forgisonajeep/rekognition-ci-pipeline/releases/tag/v1.0.0)
-![Release](https://img.shields.io/badge/Release-v1.0.0-blue?style=for-the-badge)
+[![Foundational Release](https://img.shields.io/badge/foundational-1.0-lightgrey)](https://github.com/forgisonajeep/rekognition-ci-pipeline/releases/tag/foundational-1.0)
 [![Amazon Rekognition](https://img.shields.io/badge/Rekognition-Active-brightgreen)]()
 [![CI/CD](https://img.shields.io/badge/GitHub%20Actions-CI%2FCD-blue)]()
 [![Lambda](https://img.shields.io/badge/Serverless-Lambda%20Event%20Driven-orange)]()

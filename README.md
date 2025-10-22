@@ -463,4 +463,4 @@ Use the Foundational release (**`foundational-1.0`**) as a proof checkpoint, the
 
 ## Release Notes
 **[v1.0.0](https://github.com/forgisonajeep/rekognition-ci-pipeline/releases/tag/v1.0.0)** — Foundational pipeline + Advanced event-driven Lambda live
-THIS SHOULD FAIL
+
